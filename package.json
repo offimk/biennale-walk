@@ -1,6 +1,6 @@
 {
   "name": "saopaulo-biennale-walk",
-  "version": "0.2.6",
+  "version": "0.1.1",
   "description": "A supporting nugget for the biennale project De-Bandeirante de Sao Paulo",
   "engines": {
     "node": "6.11.1"
