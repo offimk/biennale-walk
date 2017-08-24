@@ -1,6 +1,7 @@
 // content of index.js
 const http = require('http')  
 const port = 3000
+// nur so zum Testen, ob alles funktioniert
 
 const requestHandler = (request, response) => {  
   console.log(request.url)
