@@ -1,3 +1,10 @@
+// Module for mobile phone
+// Tasks: 
+// - watch folder of transferred photographs from camera
+// - resize images and copy to upload directory
+// - post to Twitter
+// - update continously GPS location to server
+ 
 var path = require('path');
 var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
