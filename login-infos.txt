@@ -1,0 +1,28 @@
+INSTAGRAM:
+martin.kohler@hcu-hamburg.de
+manmeier3844
+_deTisSch33
+
+
+TWITTER:
+martin.kohler@haw-hamburg.de
+meier_man
+_deTisSch33
+
+Consumer Key (API Key) fnoRJHg9qzlcGaGkFl5kdTp8s
+Consumer Secret (API Secret) YdqMOctQCMCsk6FuhizwY1jsqCJrluMzZeFMlL7PGFyPWVqZuR
+
+Access Token 854391487811002368-PDO8uAjXz3xvPAC8XwUs0N8rUhYIKDt
+Access Token Secret TfFVu60Bb6ZiPohzEI9MFACCvUZUV272yKVGR5Jj9Pejq 
+Access Level Read and write, and direct messages
+Owner meier_man
+Owner ID 854391487811002368
+
+
+WLAN Eye-Fi Card:
+SSID: Eye-Fi Card 715e53
+PSWD: LMWGFF4H3X
+RSN
+WPA-PSK
+CCMP TKIP
+4105

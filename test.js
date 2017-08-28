@@ -1,18 +1,25 @@
-// content of index.js
-const http = require('http')  
-const port = 3000
+var fs = require('fs');
+ 
+var delInterval = setInterval(del(), 1000);
 
-const requestHandler = (request, response) => {  
-  console.log(request.url)
-  response.end('Hello Node.js Server!')
+
+function del(){
+    fs.open(filePath, 'r+', function(err, fd){
+        if (err && err.code === 'EBUSY'){
+            console.log(filePath
+        } else if (err && err.code === 'ENOENT'){
+            console.log(filePath, 'deleted');
+            clearInterval(delInterval);
+        } else {
+            fs.close(fd, function(){
+                fs.unlink(filePath, function(err){
+                    if(err){
+                    } else {
+                    console.log(filePath, 'deleted');
+                    clearInterval(delInterval);
+                    }
+                });
+            });
+        }
+    });
 }
-
-const server = http.createServer(requestHandler)
-
-server.listen(port, (err) => {  
-  if (err) {
-    return console.log('something bad happened', err)
-  }
-
-  console.log(`server is listening on ${port}`)
-})
