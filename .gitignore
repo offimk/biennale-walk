@@ -1,0 +1,4 @@
+node_modules/*
+trash/*
+config.js
+material/*
