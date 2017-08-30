@@ -1,0 +1,307 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"nodes",
+				"nodes"
+			],
+			[
+				"o",
+				"o"
+			],
+			[
+				"fswat",
+				"fs-watch"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 184.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Zot",
+				"Reg Replace: Modify Zotero Annotations"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Mod",
+				"Reg Replace: Modify Zotero Annotations"
+			]
+		],
+		"width": 435.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk"
+	],
+	"file_history":
+	[
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/routes/fake.txt",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/routes/nodes.txt",
+		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/routes/index.js",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/test.js",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/server.js",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/index.html",
+		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/package.json",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/index.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/material/sources-cp/biennale-walk-saopaulo/index.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/source/biennale-walk-saopaulo/gps.txt",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/mapbox.html",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/sources.txt",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/gps.txt",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/.htaccess",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/source/biennale-walk/index.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/source/biennale-walk/gps.txt",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/source/biennale-walk/mapbox.html",
+		"/private/var/folders/n2/pq0g8zbj0j9fll9pzsp1lhf80000gq/T/08db6d10-9bbc-4e55-a320-e7eb6bc5ff73/html/heerstrassen/css/menu.css",
+		"/Users/admin/Desktop/WORK/projekte_sbca/2015_bremen-hotspots/WORK/website/material/menu.css",
+		"/Users/admin/Desktop/WORK/projekte_sbca/2015_bremen-hotspots/WORK/website/material/menu.jss",
+		"/Users/admin/Desktop/WORK/projekte_sbca/2015_bremen-hotspots/WORK/website/material/skizze.svg",
+		"/Users/admin/Desktop/WORK/projekte_koch/2013-06-30_nomads_urbandocumentary/2017_summerschool/organisation/usernames-pass-dam.txt",
+		"/Users/admin/Desktop/credentials.txt",
+		"/Users/admin/Downloads/search_results_metadata.csv",
+		"/Users/admin/Downloads/cp-batch.sh",
+		"/Users/admin/Desktop/test-video.html",
+		"/Users/admin/Desktop/WORK/projekte_pietsch/2016-02-03_LFF-CityOS/2anlauf/material/TUHH -Publications-MSUD.bib",
+		"/Volumes/GARMIN/GARMIN/APPS/DATA/416D1064.STR",
+		"/Users/admin/Desktop/WORK/projekte/2016-10-17_buch-denkmale-aneignen/texte/11 - knut wolfgang maron/interview-fragen.txt",
+		"/Users/admin/Desktop/anki-port_regular-future.csv",
+		"/Users/admin/Desktop/anki-port_regular-past.csv",
+		"/Users/admin/Desktop/anki-port_regular-alltimes.csv",
+		"/Users/admin/Desktop/anki-port-futuro.csv",
+		"/Users/admin/Desktop/anki-port-past.csv",
+		"/Users/admin/Desktop/anki-port_all-presente.csv",
+		"/Users/admin/Desktop/anki-port-presente.csv",
+		"/Users/admin/Desktop/TEST.txt",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/config_android.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/eyefi-watch-test.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/watch.js",
+		"/Users/admin/Desktop/keywords.txt",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/n-walk-sent.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/fs-stat-test.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/config.js",
+		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/JSHint Gutter/JSHint.sublime-settings",
+		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/JSHint Gutter/.jshintrc",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/test.js",
+		"/Users/admin/Desktop/WORK/projekte/2016-06-30_biennale-saopaulo/programming/n-walk-sent_backup.js",
+		"/Users/admin/Desktop/export/test-js/test.js",
+		"/Users/admin/Desktop/export/test-js/main.js",
+		"/Users/admin/Downloads/wetransfer-d9c6f7/copyrights.txt",
+		"/Users/admin/Desktop/flickr_tempelhofer-feld_philip-koschel",
+		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/User/Default.sublime-commands",
+		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/User/reg_replace_rules.sublime-settings"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"body-parser",
+			"NEW_",
+			"hitarea",
+			"move-an",
+			"opacity-animation",
+			"\"opacity-animation\"",
+			"id=\"opacity-animation\"",
+			"NEW_x5F",
+			"&",
+			",FilePathNew,",
+			",FilePathOld,",
+			".*(past).*\\n",
+			".*(presente).*\\n",
+			".*(futuro).*\\n",
+			".*(futuro).*",
+			".*(futuro).*\\n",
+			".*(past).*\\n",
+			".*(presente).*\\n",
+			".*(futuro).*\\n",
+			".*(past).*\\n",
+			"^.*past*\\n",
+			"Ž",
+			"voc",
+			"‹",
+			"‡",
+			";n—s",
+			";ele",
+			";tu",
+			"vocêês",
+			"voc",
+			"vocs",
+			"‹o",
+			"n—s"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"class=\"opacity-animation\"",
+			"NEW",
+			";",
+			"C:\\Users\\Frontierzones\\copytemp\\",
+			" ./",
+			"",
+			"é",
+			"você",
+			"ã",
+			"á",
+			";\\nnós",
+			";\\nele",
+			";\\ntu",
+			"vocês",
+			"você",
+			"vocês",
+			"ão",
+			"nós"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 32.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "biennale_mobile.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 197.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
