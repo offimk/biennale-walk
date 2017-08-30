@@ -19,7 +19,7 @@ var T = new Twit({
 
 const incomingfolder = cfgvar.pics_incoming_folder;
 const outgoingfolder = cfgvar.pics_outgoing_folder;
-console.log('Starting watching folder ' +incomingfolder);
+console.log('Starting watching folder ' + incomingfolder);
 
 
 
