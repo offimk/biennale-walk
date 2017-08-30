@@ -93,7 +93,7 @@ function resizeImageForPost(resentry) {
   fs.stat(outgoingfolder+filename_out, function(err, stat) {
 	// in case file already exists, name new
   if(err == null) {
-		filename_out = filename_out + Date().now();
+		filename_out = filename_out + Date.now();
 	}});
   im.resize({width: 600, strip: false, srcPath: incomingfolder+resentry.filename, dstPath: outgoingfolder+filename_out}, function(err) {
       if(err) { throw err; }

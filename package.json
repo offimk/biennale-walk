@@ -1,20 +1,21 @@
 {
   "name": "saopaulo-biennale-walk",
-  "version": "0.1.1",
+  "version": "0.7.1",
   "description": "A supporting mobile nugget for the biennale project De-Bandeirante de Sao Paulo",
   "engines": {
     "node": "6.11.1"
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "start": "node sphh.js",
+    "test": "node watch.js"
   },
   "dependencies": {
+    "chokidar": "^1.0.0",
     "ejs": "2.5.6",
     "express": "4.15.2",
-    "chokidar": "^1.0.0",
     "imagemagick": "^0.1.0",
+    "nedb": "^1.8.0",
     "twit": "^2.0.0"
   },
   "repository": {
