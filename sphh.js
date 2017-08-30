@@ -39,27 +39,27 @@ function resizeImageForPost(filename) {
 function postImage(filename) {
 	console.log("Posting this image: " +filename);
   // post a tweet with media 
-  var b64content = fs.readFileSync(outgoingfolder+filename, { encoding: 'base64' })
+  var b64content = fs.readFileSync(outgoingfolder+filename, { encoding: 'base64' });
  
   // first we must post the media to Twitter 
   T.post('media/upload', { media_data: b64content }, function (err, data, response) {
   // now we can assign alt text to the media, for use by screen readers and 
   // other text-based presentations and interpreters 
-  var mediaIdStr = data.media_id_string
-  var altText = "Big Urban Walks - Edition Sao Paulo 2017"
-  var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+  var mediaIdStr = data.media_id_string;
+  var altText = "Big Urban Walks - Edition Sao Paulo 2017";
+  var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
   console.log('Media hochgeladen');
   T.post('media/metadata/create', meta_params, function (err, data, response) {
     if (!err) {
       // now we can reference the media and post a tweet (media will attach to the tweet) 
-      var params = { status: 'Big Urban Walks - Edition Sao Paulo 2017 #XPSP', media_ids: [mediaIdStr] }
+      var params = { status: 'Big Urban Walks - Edition Sao Paulo 2017 #XPSP', media_ids: [mediaIdStr] };
  
       T.post('statuses/update', params, function (err, data, response) {
         console.log('Posted: ' +filename);
-        })
+        });
       } else { throw err;}
-    })
-  })
+    });
+  });
 }
 
 function resizeAndPost(filename) {
@@ -73,20 +73,34 @@ function resizeAndPost(filename) {
 }
 
 
+function changeFile(filename) {
+  o = findIDfilesArr(filename);
+  if (o > -1) {
+    fs.stat(incomingfolder+filename , function(err, stats) {
+      filesArr[o] = [filename, filesArr[o][1], stats["mtime"].getTime(), stats["size"]];
+      console.log(Date.now() + ';' +filename+ ';Changed;' + stats["mtime"] + ';' + stats["size"] + ';');
+    });
+  } else {console.log("GEÄNDERT ABER NICHT EINGETRAGEN!");}
+}
 
 
 // Initialize watcher. 
 var watcher = chokidar.watch(incomingfolder, {
   ignored: /[\/\\]\./,
-  ignoreInitial: true,
   persistent: true
 });
+
+console.log('WATCHING FOLDER ' +incomingfolder);
+
  
 // Something to use when events are received. 
 var log = console.log.bind(console);
 // Add event listeners. 
 watcher
-  .on('add', function(err, path){console.log(path);});
+  .on('add', path => resizeAndPost(pathobject.basename(path)))
+  .on('change', path => changeFile(pathobject.basename(path)))
+  .on('unlink', path => log(`File ${path} has been removed`));
+ 
 
 
 
