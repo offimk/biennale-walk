@@ -94,9 +94,10 @@ function resizeImageForPost(resentry) {
 	// in case file already exists, name new
   if(err == null) {
 		filename_out = filename_out + Date.now();
+    console.log("exists already");
 	}});
   im.resize({width: 600, strip: false, srcPath: incomingfolder+resentry.filename, dstPath: outgoingfolder+filename_out}, function(err) {
-      if(err) { throw err; }
+      if(err) { console.log("Error while resizing " + resentry.filename)}//throw err; }
     postImage(resentry);
     db.update({ _id: resentry._id }, { $set: { "status": 4} }, { multi: false });
   });
