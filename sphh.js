@@ -3,8 +3,8 @@ var gm = require('gm');
 var chokidar = require('chokidar');
 var Twit = require('twit');
 var fs = require('fs');
-var Datastore = require('nedb')
-  , db = new Datastore({ filename: 'biennale-db.json', autoload: true });
+var Datastore = require('nedb');
+var db = new Datastore({ filename: 'biennale-db.json', autoload: true });
  
 
 const pathobject = require('path');
