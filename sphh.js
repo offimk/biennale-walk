@@ -114,6 +114,7 @@ function processLoop(){
 
 function addFile(filename) {
   var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 1, "stats": {}};
+  console.log("add file procedure for: " + filename);
   db.findOne({ "filename": filename }, function (err, doc) {
     if (doc == null) {
       fs.stat(incomingfolder + filename , function(err, stats) {
