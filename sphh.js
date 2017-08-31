@@ -4,7 +4,7 @@ var chokidar = require('chokidar');
 var Twit = require('twit');
 var fs = require('fs');
 var Datastore = require('nedb');
-var db = new Datastore({ filename: 'biennale-db.json', autoload: true });
+var db = new Datastore({ filename: 'biennale-db.json'});
  
 
 const pathobject = require('path');
@@ -22,6 +22,7 @@ var T = new Twit({
 
 
 
+
 const incomingfolder = cfgvar.pics_incoming_folder;
 const outgoingfolder = cfgvar.pics_outgoing_folder;
 const delayBeforePost = cfgvar.delayBeforePost;
@@ -29,8 +30,50 @@ const twitterMessage = cfgvar.twitterPost;
 var allowedExtArr = [".jpg", ".JPG", ".png", ".PNG"];
 
 
-console.log('Starting watching folder ' + incomingfolder);
-var fileInterval = setInterval(processLoop, 1000);
+// init DB
+db.loadDatabase(function (err){
+  if (err) throw(err);
+  console.log("DB loaded");
+  //special functions?
+  startOptions();
+  startMain();
+});
+
+function startOptions() {
+  process.argv.forEach(function (val, index, array) {
+    if (val == 'populate') {
+      db.remove({}, { multi: true }, function (err, numRemoved) {
+        fs.readdirSync(incomingfolder).forEach(file => {
+          var newrecord = {"timestamp": Date.now(), "filename": file, "status": 6, "stats": {}};
+          console.log("added: " + file);
+          fs.stat(incomingfolder + file , function(err, stats) {
+            newrecord.stats = stats;
+            db.insert(newrecord);
+          });
+        });
+      });
+    }
+  });  
+}
+
+function startMain () {
+  console.log('Starting watching folder ' + incomingfolder);
+  // Initialize watcher. 
+  var watcher = chokidar.watch(incomingfolder, {
+    ignored: /[\/\\]\./,
+    persistent: true
+  });
+   
+  // Something to use when events are received. 
+  var log = console.log.bind(console);
+  // Add event listeners. 
+  watcher
+    .on('add', path => addFile(pathobject.basename(path)))
+    .on('change', path => log(`File ${path} has been changed`))
+    .on('unlink', path => log(`File ${path} has been removed`));
+
+  var fileInterval = setInterval(processLoop, 1000);
+}
 
 
 
@@ -48,8 +91,6 @@ function processLoop(){
 
   // check if added files have finished loading
   db.find({ status: 1 }, function (err, docs) {
-    // docs is an array containing documents Mars, Earth, Jupiter
-    // If no document is found, docs is equal to []
     docs.forEach(function(entry) {
         fs.stat(incomingfolder + entry.filename , function(err, stats) {
           if (Date.now() > (entry.timestamp + delayBeforePost)) {
@@ -74,11 +115,11 @@ function processLoop(){
 function addFile(filename) {
   var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 1, "stats": {}};
   db.findOne({ "filename": filename }, function (err, doc) {
-    console.log(doc);
     if (doc == null) {
       fs.stat(incomingfolder + filename , function(err, stats) {
         newrecord.stats = stats;
         db.insert(newrecord);
+        console.log("added: " + filename);
       });
     }
   });
@@ -121,7 +162,7 @@ function postImage(resentry) {
     // now we can assign alt text to the media, for use by screen readers and 
     // other text-based presentations and interpreters 
     var mediaIdStr = data.media_id_string;
-    var altText = "Big Urban Walks - Edition Sao Paulo 2017";
+    var altText = twitterMessage;
     var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
     console.log('Media hochgeladen');
     T.post('media/metadata/create', meta_params, function (err, data, response) {
@@ -160,22 +201,7 @@ function changeFile(filename) {
 }
 
 
-// Initialize watcher. 
-var watcher = chokidar.watch(incomingfolder, {
-  ignored: /[\/\\]\./,
-  persistent: true
-});
 
-console.log('WATCHING FOLDER ' +incomingfolder);
-
- 
-// Something to use when events are received. 
-var log = console.log.bind(console);
-// Add event listeners. 
-watcher
-  .on('add', path => addFile(pathobject.basename(path)))
-  .on('change', path => log(`File ${path} has been changed`))
-  .on('unlink', path => log(`File ${path} has been removed`));
  
 
 
