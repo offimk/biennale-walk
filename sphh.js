@@ -69,8 +69,8 @@ function startMain () {
   // Add event listeners. 
   watcher
     .on('add', path => addFile(pathobject.basename(path)))
-    .on('change', path => log(`File ${path} has been changed`))
-    .on('unlink', path => log(`File ${path} has been removed`));
+    .on('change', path => console.log("File ${path} has been changed"))
+    .on('unlink', path => console.log("File ${path} has been removed"));
 
   var fileInterval = setInterval(processLoop, 1000);
 }
