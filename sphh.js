@@ -174,7 +174,7 @@ var log = console.log.bind(console);
 // Add event listeners. 
 watcher
   .on('add', path => addFile(pathobject.basename(path)))
-  .on('change', path => addFile(pathobject.basename(path)))
+  .on('change', path => log(`File ${path} has been changed`))
   .on('unlink', path => log(`File ${path} has been removed`));
  
 
