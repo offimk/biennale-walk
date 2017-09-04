@@ -58,6 +58,28 @@ function startOptions() {
 
 function startMain () {
   console.log('Starting watching folder ' + incomingfolder);
+  // startWatching();
+  // if uncomment above, please comment the watchingDirLoop in main event loop
+  var fileInterval = setInterval(processLoop, 1000);
+}
+
+function watchingDirLoop () {
+  fs.readdirSync(incomingfolder).forEach(file => {
+    db.find({ filename: file }, function (err, docs) {
+      if (err) {console.log("Error")} else {
+        // console.log("DOCS: " +  docs.length);
+        if (docs.length > 0) {
+          //console.log("File: "+ docs[0].filename);
+        } else {
+          addFile(file);
+        }
+      }
+    });
+  });  
+}
+
+
+function startWatching() {
   // Initialize watcher. 
   var watcher = chokidar.watch(incomingfolder, {
     ignored: /[\/\\]\./,
@@ -72,7 +94,6 @@ function startMain () {
     .on('change', path => console.log("File ${path} has been changed"))
     .on('unlink', path => console.log("File ${path} has been removed"));
 
-  var fileInterval = setInterval(processLoop, 1000);
 }
 
 
@@ -88,6 +109,9 @@ function processLoop(){
   // 5: posting
   // 6: posted
   // 9: permanent error
+
+  // check FilesDir for new files
+  watchingDirLoop();
 
   // check if added files have finished loading
   db.find({ status: 1 }, function (err, docs) {
@@ -108,22 +132,26 @@ function processLoop(){
         });
     });
   });
+
+
 }
 
 
 
 function addFile(filename) {
-  var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 1, "stats": {}};
-  console.log("add file procedure for: " + filename);
-  db.findOne({ "filename": filename }, function (err, doc) {
-    if (doc == null) {
-      fs.stat(incomingfolder + filename , function(err, stats) {
-        newrecord.stats = stats;
-        db.insert(newrecord);
-        console.log("added: " + filename);
-      });
-    }
-  });
+  if (allowedExtArr.indexOf(pathobject.extname(filename)) > 0) {
+    var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 1, "stats": {}};
+    console.log("add file procedure for: " + filename);
+    db.findOne({ "filename": filename }, function (err, doc) {
+      if (doc == null) {
+        fs.stat(incomingfolder + filename , function(err, stats) {
+          newrecord.stats = stats;
+          db.insert(newrecord);
+          console.log("added: " + filename);
+        });
+      }
+    });
+  }
 }
 
 
@@ -175,7 +203,7 @@ function postImage(resentry) {
           console.log('Posted: ' + resentry.filename);
           db.update({ _id: resentry._id }, { $set: { "status": 6} }, { multi: false });
           });
-        } else { throw err;}
+        } else { console.log(err);}
      });
   });
 }
