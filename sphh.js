@@ -27,7 +27,24 @@ const incomingfolder = cfgvar.pics_incoming_folder;
 const outgoingfolder = cfgvar.pics_outgoing_folder;
 const delayBeforePost = cfgvar.delayBeforePost;
 const twitterMessage = cfgvar.twitterPost;
+var internetConnected = false;
 var allowedExtArr = [".jpg", ".JPG", ".png", ".PNG"];
+
+// check internet connectivity
+function checkInternet(cb) {
+    //console.log("checking internet");
+    require('dns').lookup('google.com',function(err) {
+        if (err && err.code == "ENOTFOUND") {
+            //console.log("not connected");
+            internetConnected = false;
+            cb(false);
+        } else {
+            //console.log("connected");
+            internetConnected = true;
+            cb(true);
+        }
+    })
+}
 
 
 // init DB
@@ -58,6 +75,10 @@ function startOptions() {
 
 function startMain () {
   console.log('Starting watching folder ' + incomingfolder);
+  checkInternet(function (cb) {
+      console.log("Internet is up: " + cb);
+  });
+  
   // startWatching();
   // if uncomment above, please comment the watchingDirLoop in main event loop
   var fileInterval = setInterval(processLoop, 1000);
@@ -108,13 +129,14 @@ function processLoop(){
   // 4: resized
   // 5: posting
   // 6: posted
+  // 7: posting on hold
   // 9: permanent error
 
   // check FilesDir for new files
   watchingDirLoop();
 
   // check if added files have finished loading
-  db.find({ status: 1 }, function (err, docs) {
+  db.find({ $or: [{ status: 0 }, { status: 1 }] }, function (err, docs) {
     docs.forEach(function(entry) {
         fs.stat(incomingfolder + entry.filename , function(err, stats) {
           if (Date.now() > (entry.timestamp + delayBeforePost)) {
@@ -122,17 +144,30 @@ function processLoop(){
             // Set an existing field's value
             db.update({ _id: entry._id }, { $set: { "status": 2, "stats": stats } }, { multi: false }, function (err, numReplaced) {
               // numReplaced = 3
-              // Field 'system' on Mars, Earth, Jupiter now has value 'solar system'
-              console.log("Status for " + entry.filename + " changed.");
+              console.log(entry.filename + " is stable");
               resizeAndPost(entry);
             });
           } else {
-            console.log('File: ' + entry.filename + ' changing.')
+            if (entry.status == 0) {
+              db.update({ _id: entry._id }, { $set: { "status": 1, "stats": stats } }, { multi: false }, function (err, numReplaced) {
+                console.log(entry.filename + " is added and waiting for resizing");
+              });
+            }
           }
         });
     });
   });
 
+  // check if internetConnected AND images on posting hold
+  if (internetConnected) {
+    //console.log("running db find status 7");
+    db.find({ status: 7 }, function (err, docs) {
+      docs.forEach(function(entry) {
+        console.log("running post with " + entry.filename);
+        postImage(entry);
+      });
+    });
+  }
 
 }
 
@@ -140,14 +175,14 @@ function processLoop(){
 
 function addFile(filename) {
   if (allowedExtArr.indexOf(pathobject.extname(filename)) > 0) {
-    var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 1, "stats": {}};
-    console.log("add file procedure for: " + filename);
+    var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 0, "stats": {}};
+    // console.log("add file procedure for: " + filename);
     db.findOne({ "filename": filename }, function (err, doc) {
       if (doc == null) {
         fs.stat(incomingfolder + filename , function(err, stats) {
           newrecord.stats = stats;
           db.insert(newrecord);
-          console.log("added: " + filename);
+          console.log(filename + " added.");
         });
       }
     });
@@ -181,31 +216,38 @@ function resizeImageForPost(resentry) {
 }
 
 function postImage(resentry) {
-  db.update({ _id: resentry._id }, { $set: { "status": 5} }, { multi: false });
-	console.log("Posting this image: " + resentry.filename);
-  // post a tweet with media 
-  var b64content = fs.readFileSync(outgoingfolder+resentry.filename, { encoding: 'base64' });
- 
-  // first we must post the media to Twitter 
-  T.post('media/upload', { media_data: b64content }, function (err, data, response) {
-    // now we can assign alt text to the media, for use by screen readers and 
-    // other text-based presentations and interpreters 
-    var mediaIdStr = data.media_id_string;
-    var altText = twitterMessage;
-    var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
-    console.log('Media hochgeladen');
-    T.post('media/metadata/create', meta_params, function (err, data, response) {
-      if (!err) {
-        // now we can reference the media and post a tweet (media will attach to the tweet) 
-        var params = { status: twitterMessage, media_ids: [mediaIdStr] };
+    db.update({ _id: resentry._id }, { $set: { "status": 5} }, { multi: false });
+    console.log("Posting this image: " + resentry.filename);
+    // post a tweet with media 
+    var b64content = fs.readFileSync(outgoingfolder+resentry.filename, { encoding: 'base64' });
    
-        T.post('statuses/update', params, function (err, data, response) {
-          console.log('Posted: ' + resentry.filename);
-          db.update({ _id: resentry._id }, { $set: { "status": 6} }, { multi: false });
-          });
-        } else { console.log(err);}
-     });
-  });
+    // first we must post the media to Twitter 
+    T.post('media/upload', { media_data: b64content }, function (err, data, response) {
+      // now we can assign alt text to the media, for use by screen readers and 
+      // other text-based presentations and interpreters 
+      var mediaIdStr = data.media_id_string;
+      var altText = twitterMessage;
+      var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
+      
+      T.post('media/metadata/create', meta_params, function (err, data, response) {
+        if (!err) {
+          console.log('Media uploaded');
+          // now we can reference the media and post a tweet (media will attach to the tweet) 
+          var params = { status: twitterMessage, media_ids: [mediaIdStr] };
+     
+          T.post('statuses/update', params, function (err, data, response) {
+            console.log('Posted: ' + resentry.filename);
+            db.update({ _id: resentry._id }, { $set: { "status": 6} }, { multi: false });
+            });
+            internetConnected = true; console.log("Internet connection is up: " + internetConnected);
+          } else {
+            console.log(err);
+            // put on posting hold status
+            db.update({ _id: resentry._id }, { $set: { "status": 7} }, { multi: false });
+            checkInternet(function(cb) { console.log("Internet connection is up: " + cb)});
+          }
+       });
+    });
 }
 
 function resizeAndPost(filename) {
