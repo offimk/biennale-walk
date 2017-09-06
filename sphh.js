@@ -200,7 +200,7 @@ function resizeImageForPost(resentry) {
   if(err == null) {
 		filename_out = filename_out + Date.now();
     console.log("exists already");
-    return();
+    return;
 	}});
   //im.resize({width: 600, strip: false, srcPath: incomingfolder+resentry.filename, dstPath: outgoingfolder+filename_out}, function(err) {
   gm(incomingfolder+resentry.filename).resize(600, 600).noProfile().write(outgoingfolder+filename_out, function (err) {
