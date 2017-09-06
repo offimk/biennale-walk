@@ -196,10 +196,11 @@ function resizeImageForPost(resentry) {
   db.update({ _id: resentry._id }, { $set: { "status": 3 } }, { multi: false });
   
   fs.stat(outgoingfolder+filename_out, function(err, stat) {
-	// in case file already exists, name new
+	// in case file already exists, break.
   if(err == null) {
 		filename_out = filename_out + Date.now();
     console.log("exists already");
+    return();
 	}});
   //im.resize({width: 600, strip: false, srcPath: incomingfolder+resentry.filename, dstPath: outgoingfolder+filename_out}, function(err) {
   gm(incomingfolder+resentry.filename).resize(600, 600).noProfile().write(outgoingfolder+filename_out, function (err) {
