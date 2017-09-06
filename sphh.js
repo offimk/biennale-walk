@@ -78,7 +78,6 @@ function startMain () {
   checkInternet(function (cb) {
       console.log("Internet is up: " + cb);
   });
-  
   // startWatching();
   // if uncomment above, please comment the watchingDirLoop in main event loop
   var fileInterval = setInterval(processLoop, 1000);
@@ -87,16 +86,13 @@ function startMain () {
 function watchingDirLoop () {
   fs.readdirSync(incomingfolder).forEach(file => {
     db.find({ filename: file }, function (err, docs) {
-      if (err) {console.log("Error")} else {
-        // console.log("DOCS: " +  docs.length);
-        if (docs.length > 0) {
-          //console.log("File: "+ docs[0].filename);
-        } else {
-          addFile(file);
-        }
+      console.log("Check file: " + file + " with result; "+ docs.length);
+      if (!err && (docs.length <= 0)) {
+        addFile(file);
+        console.log("Filewatcher new file: " + file);
       }
     });
-  });  
+  });
 }
 
 
