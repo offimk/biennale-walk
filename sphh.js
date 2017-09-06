@@ -5,7 +5,7 @@ var Twit = require('twit');
 var fs = require('fs');
 var Datastore = require('nedb');
 var db = new Datastore({ filename: 'biennale-db.json'});
- 
+var inspector = require('inspector');
 
 const pathobject = require('path');
 
@@ -43,7 +43,7 @@ function checkInternet(cb) {
             internetConnected = true;
             cb(true);
         }
-    })
+    });
 }
 
 
@@ -51,6 +51,7 @@ function checkInternet(cb) {
 db.loadDatabase(function (err){
   if (err) throw(err);
   console.log("DB loaded");
+  db.ensureIndex({ fieldName: 'filename', unique: true });
   //special functions?
   startOptions();
   startMain();
@@ -80,16 +81,16 @@ function startMain () {
   });
   // startWatching();
   // if uncomment above, please comment the watchingDirLoop in main event loop
-  var fileInterval = setInterval(processLoop, 1000);
+  var fileInterval = setInterval(processLoop, 2000);
 }
 
 function watchingDirLoop () {
   fs.readdirSync(incomingfolder).forEach(file => {
-    db.find({ filename: file }, function (err, docs) {
-      console.log("Check file: " + file + " with result; "+ docs.length);
-      if (!err && (docs.length <= 0)) {
+    db.findOne({ filename: file }, function (err, doc) {
+      // console.log("Check file: " + file + " with result; "+ doc);
+      if (!err && (doc == null)) {
         addFile(file);
-        console.log("Filewatcher new file: " + file);
+        // console.log("Handing " + file +  " to addFile");
       }
     });
   });
@@ -146,7 +147,7 @@ function processLoop(){
           } else {
             if (entry.status == 0) {
               db.update({ _id: entry._id }, { $set: { "status": 1, "stats": stats } }, { multi: false }, function (err, numReplaced) {
-                console.log(entry.filename + " is added and waiting for resizing");
+                console.log(entry.filename + " waiting for resizing");
               });
             }
           }
@@ -159,7 +160,7 @@ function processLoop(){
     //console.log("running db find status 7");
     db.find({ status: 7 }, function (err, docs) {
       docs.forEach(function(entry) {
-        console.log("running post with " + entry.filename);
+        console.log(entry.filename + " from hold to posting.");
         postImage(entry);
       });
     });
@@ -170,9 +171,11 @@ function processLoop(){
 
 
 function addFile(filename) {
-  if (allowedExtArr.indexOf(pathobject.extname(filename)) > 0) {
-    var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 0, "stats": {}};
+  // console.log("Add file procedure with " + filename + " ext:" + pathobject.extname(filename) + "_");
+  // console.log("Allowed Ext: " + allowedExtArr + " with ext yes? " + allowedExtArr.indexOf(pathobject.extname(filename)));
+  if (allowedExtArr.indexOf(pathobject.extname(filename)) >= 0) {
     // console.log("add file procedure for: " + filename);
+    var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 0, "stats": {}};
     db.findOne({ "filename": filename }, function (err, doc) {
       if (doc == null) {
         fs.stat(incomingfolder + filename , function(err, stats) {
