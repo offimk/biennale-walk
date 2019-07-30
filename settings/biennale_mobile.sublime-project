@@ -3,6 +3,12 @@
 	[
 		{
 			"path": "."
+		},
+		{
+			"path": "/Users/admin/Desktop/SOURCES/github/biennale-walk"
+		},
+		{
+			"path": "/Users/admin/Desktop/SOURCES/heroku"
 		}
 	]
 }

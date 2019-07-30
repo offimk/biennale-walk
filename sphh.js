@@ -6,6 +6,7 @@ var fs = require('fs');
 var Datastore = require('nedb');
 var db = new Datastore({ filename: 'biennale-db.json'});
 var inspector = require('inspector');
+const dotenv = require('dotenv');
 
 const pathobject = require('path');
 
@@ -19,14 +20,13 @@ var T = new Twit({
   access_token_secret:  'TfFVu60Bb6ZiPohzEI9MFACCvUZUV272yKVGR5Jj9Pejq'
 });
 
+// server.js
+dotenv.config();
+console.log(`Your port is ${process.env.PORT}`); // 8626
 
 
 
 
-const incomingfolder = cfgvar.pics_incoming_folder;
-const outgoingfolder = cfgvar.pics_outgoing_folder;
-const delayBeforePost = cfgvar.delayBeforePost;
-const twitterMessage = cfgvar.twitterPost;
 var internetConnected = false;
 var allowedExtArr = [".jpg", ".JPG", ".png", ".PNG"];
 
@@ -61,10 +61,10 @@ function startOptions() {
   process.argv.forEach(function (val, index, array) {
     if (val == 'populate') {
       db.remove({}, { multi: true }, function (err, numRemoved) {
-        fs.readdirSync(incomingfolder).forEach(file => {
+        fs.readdirSync(process.env.INFOLDER).forEach(file => {
           var newrecord = {"timestamp": Date.now(), "filename": file, "status": 6, "stats": {}};
           console.log("added: " + file);
-          fs.stat(incomingfolder + file , function(err, stats) {
+          fs.stat(process.env.INFOLDER + file , function(err, stats) {
             newrecord.stats = stats;
             db.insert(newrecord);
           });
@@ -75,7 +75,7 @@ function startOptions() {
 }
 
 function startMain () {
-  console.log('Starting watching folder ' + incomingfolder);
+  console.log('Starting watching folder ' + process.env.INFOLDER);
   checkInternet(function (cb) {
       console.log("Internet is up: " + cb);
   });
@@ -85,7 +85,7 @@ function startMain () {
 }
 
 function watchingDirLoop () {
-  fs.readdirSync(incomingfolder).forEach(file => {
+  fs.readdirSync(process.env.INFOLDER).forEach(file => {
     db.findOne({ filename: file }, function (err, doc) {
       // console.log("Check file: " + file + " with result; "+ doc);
       if (!err && (doc == null)) {
@@ -99,7 +99,7 @@ function watchingDirLoop () {
 
 function startWatching() {
   // Initialize watcher. 
-  var watcher = chokidar.watch(incomingfolder, {
+  var watcher = chokidar.watch(process.env.INFOLDER, {
     ignored: /[\/\\]\./,
     persistent: true
   });
@@ -135,8 +135,8 @@ function processLoop(){
   // check if added files have finished loading
   db.find({ $or: [{ status: 0 }, { status: 1 }] }, function (err, docs) {
     docs.forEach(function(entry) {
-        fs.stat(incomingfolder + entry.filename , function(err, stats) {
-          if (Date.now() > (entry.timestamp + delayBeforePost)) {
+        fs.stat(process.env.INFOLDER + entry.filename , function(err, stats) {
+          if (Date.now() > (entry.timestamp + process.env.DELAYBEFOREPOST)) {
             console.log('File: ' + entry.filename + ' is stable.')
             // Set an existing field's value
             db.update({ _id: entry._id }, { $set: { "status": 2, "stats": stats } }, { multi: false }, function (err, numReplaced) {
@@ -178,7 +178,7 @@ function addFile(filename) {
     var newrecord = {"timestamp": Date.now(), "filename": filename, "status": 0, "stats": {}};
     db.findOne({ "filename": filename }, function (err, doc) {
       if (doc == null) {
-        fs.stat(incomingfolder + filename , function(err, stats) {
+        fs.stat(process.env.INFOLDER + filename , function(err, stats) {
           newrecord.stats = stats;
           db.insert(newrecord);
           console.log(filename + " added.");
@@ -195,7 +195,7 @@ function resizeImageForPost(resentry) {
   console.log("Image " + filename_out + " resize starting");
   db.update({ _id: resentry._id }, { $set: { "status": 3 } }, { multi: false });
   
-  fs.stat(outgoingfolder+filename_out, function(err, stat) {
+  fs.stat(process.env.OUTFOLDER+filename_out, function(err, stat) {
 	// in case file already exists, break.
   if(err == null) {
 		filename_out = filename_out + Date.now();
@@ -203,7 +203,7 @@ function resizeImageForPost(resentry) {
     return;
 	}});
   //im.resize({width: 600, strip: false, srcPath: incomingfolder+resentry.filename, dstPath: outgoingfolder+filename_out}, function(err) {
-  gm(incomingfolder+resentry.filename).resize(600, 600).noProfile().write(outgoingfolder+filename_out, function (err) {
+  gm(process.env.INFOLDER+resentry.filename).resize(600, 600).noProfile().write(process.env.OUTFOLDER+filename_out, function (err) {
     if(err) {
         console.log("Error while resizing " + resentry.filename);
         // hier muss noch der Status Error Update rein
@@ -219,21 +219,21 @@ function postImage(resentry) {
     db.update({ _id: resentry._id }, { $set: { "status": 5} }, { multi: false });
     console.log("Posting this image: " + resentry.filename);
     // post a tweet with media 
-    var b64content = fs.readFileSync(outgoingfolder+resentry.filename, { encoding: 'base64' });
+    var b64content = fs.readFileSync(process.env.OUTFOLDER+resentry.filename, { encoding: 'base64' });
    
     // first we must post the media to Twitter 
     T.post('media/upload', { media_data: b64content }, function (err, data, response) {
       // now we can assign alt text to the media, for use by screen readers and 
       // other text-based presentations and interpreters 
       var mediaIdStr = data.media_id_string;
-      var altText = twitterMessage;
+      var altText = process.env.TWITTERMESSAGE;
       var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
       
       T.post('media/metadata/create', meta_params, function (err, data, response) {
         if (!err) {
           console.log('Media uploaded');
           // now we can reference the media and post a tweet (media will attach to the tweet) 
-          var params = { status: twitterMessage, media_ids: [mediaIdStr] };
+          var params = { status: process.env.TWITTERMESSAGE, media_ids: [mediaIdStr] };
      
           T.post('statuses/update', params, function (err, data, response) {
             console.log('Posted: ' + resentry.filename);
@@ -252,7 +252,7 @@ function postImage(resentry) {
 
 function resizeAndPost(filename) {
 
-   fs.stat(outgoingfolder+filename, function(err, stat) {
+   fs.stat(process.env.OUTFOLDER+filename, function(err, stat) {
 	if(err == null) {
 		console.log(filename+' already posted');
 	} else {
@@ -264,7 +264,7 @@ function resizeAndPost(filename) {
 function changeFile(filename) {
   o = findIDfilesArr(filename);
   if (o > -1) {
-    fs.stat(incomingfolder+filename , function(err, stats) {
+    fs.stat(process.env.INFOLDER+filename , function(err, stats) {
       filesArr[o] = [filename, filesArr[o][1], stats["mtime"].getTime(), stats["size"]];
       console.log(Date.now() + ';' +filename+ ';Changed;' + stats["mtime"] + ';' + stats["size"] + ';');
     });

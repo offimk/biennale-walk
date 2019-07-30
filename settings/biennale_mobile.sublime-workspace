@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"path",
+				"pathobject"
+			],
+			[
+				"twit",
+				"twitterMessage"
+			],
+			[
+				"filen",
+				"filename_out"
+			],
+			[
 				"nodes",
 				"nodes"
 			],
@@ -19,6 +31,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/routes/index.js",
+			"settings":
+			{
+				"buffer_size": 3872,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -72,10 +92,20 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/admin/Desktop/SOURCES/github/biennale-walk"
+		"/Users/admin/Desktop/SOURCES/heroku",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo",
+		"/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/routes"
 	],
 	"file_history":
 	[
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/biennale-db.json",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/sphh.js",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/settings/biennale_mobile.sublime-project",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/config.js",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/test/generate-big-db.js",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/test/biennale-db.json",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/test/imgtest.js",
+		"/Users/admin/Desktop/SOURCES/github/biennale-walk/gitup.sh",
 		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/routes/fake.txt",
 		"/Users/admin/Desktop/SOURCES/heroku/deploy-express-with-mongoose-on-heroku/routes/nodes.txt",
 		"/Users/admin/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
@@ -134,7 +164,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 33.0
 	},
 	"find_in_files":
 	{
@@ -208,7 +238,7 @@
 			"ão",
 			"nós"
 		],
-		"reverse": true,
+		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
@@ -217,8 +247,39 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/Users/admin/Desktop/SOURCES/heroku/biennale-walk-saopaulo/routes/index.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3872,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								365,
+								391
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

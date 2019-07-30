@@ -1,5 +1,5 @@
 var fs = require('fs')
-  , gm = require('gm').subClass({imageMagick: true});
+  , gm = require('gm');
  
 // resize and remove EXIF profile data 
 gm('test.jpg')
