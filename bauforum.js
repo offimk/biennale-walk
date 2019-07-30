@@ -11,7 +11,6 @@ const dotenv = require('dotenv');
 const pathobject = require('path');
 
 
-var cfgvar = require('./config');
  
 var T = new Twit({
   consumer_key:         process.env.TWITTERKEY,
