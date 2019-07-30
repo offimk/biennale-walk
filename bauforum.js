@@ -11,17 +11,19 @@ const dotenv = require('dotenv');
 const pathobject = require('path');
 
 
- 
+dotenv.config();
+const DelayBeforePost = Number(process.env.DELAYBEFOREPOST);
+console.log('Twitterkey ${process.env.TWITTERKEY}');
+console.log(`Your port is ${process.env.PORT}`);
+console.log(`Delay is ${process.env.DELAYBEFOREPOST}`); 
+console.log(typeof DelayBeforePost);
+
 var T = new Twit({
   consumer_key:         process.env.TWITTERKEY,
   consumer_secret:      process.env.TWITTERSECRET,
   access_token:         process.env.TWITTERTOKEN,
   access_token_secret:  process.env.TWITTERTOKENSECRET
 });
-
-// server.js
-dotenv.config();
-console.log(`Your port is ${process.env.PORT}`); // 8626
 
 
 
@@ -135,7 +137,7 @@ function processLoop(){
   db.find({ $or: [{ status: 0 }, { status: 1 }] }, function (err, docs) {
     docs.forEach(function(entry) {
         fs.stat(process.env.INFOLDER + entry.filename , function(err, stats) {
-          if (Date.now() > (entry.timestamp + process.env.DELAYBEFOREPOST)) {
+          if (Date.now() > (entry.timestamp + DelayBeforePost)) {
             console.log('File: ' + entry.filename + ' is stable.')
             // Set an existing field's value
             db.update({ _id: entry._id }, { $set: { "status": 2, "stats": stats } }, { multi: false }, function (err, numReplaced) {
