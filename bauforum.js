@@ -14,10 +14,10 @@ const pathobject = require('path');
 var cfgvar = require('./config');
  
 var T = new Twit({
-  consumer_key:         'fnoRJHg9qzlcGaGkFl5kdTp8s',
-  consumer_secret:      'YdqMOctQCMCsk6FuhizwY1jsqCJrluMzZeFMlL7PGFyPWVqZuR',
-  access_token:         '854391487811002368-PDO8uAjXz3xvPAC8XwUs0N8rUhYIKDt',
-  access_token_secret:  'TfFVu60Bb6ZiPohzEI9MFACCvUZUV272yKVGR5Jj9Pejq'
+  consumer_key:         process.env.TWITTERKEY,
+  consumer_secret:      process.env.TWITTERSECRET,
+  access_token:         process.env.TWITTERTOKEN,
+  access_token_secret:  process.env.TWITTERTOKENSECRET
 });
 
 // server.js
