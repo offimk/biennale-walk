@@ -1,5 +1,7 @@
+.git*
 node_modules/*
 trash/*
+test/*
 pics_*
 config.js
 .env
